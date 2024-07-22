@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Place 3D objects on real surfaces using your camera — a WebXR AR toolkit" />
+  <title>AR Toolkit</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    canvas { display: block; }
+
+    #landing {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      text-align: center;
+      padding: 24px;
+    }
+
+    #landing h1 {
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    #landing p {
+      font-size: 1rem;
+      color: #aaa;
+      max-width: 380px;
+      line-height: 1.6;
+    }
+
+    #ar-button-container {
+      margin-top: 8px;
+    }
+
+    /* ControlsOverlay HUD */
+    #overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      touch-action: none;
+      z-index: 10;
+    }
+
+    #hud {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      gap: 12px;
+      pointer-events: auto;
+    }
+
+    #hud.visible { display: flex; }
+
+    #hud button {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      border-radius: 50px;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: background 0.15s;
+    }
+
+    #hud button:hover { background: rgba(255,255,255,0.25); }
+    #hud button:focus-visible { outline: 2px solid rgba(255,255,255,0.6); outline-offset: 2px; }
+
+    #hint {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      display: none;
+      backdrop-filter: blur(8px);
+      max-width: calc(100vw - 48px);
+      text-align: center;
+    }
+
+    #hint.visible { display: block; }
+  </style>
+</head>
+<body>
+  <div id="landing">
+    <h1>AR Toolkit</h1>
+    <p>Place 3D objects on real surfaces through your camera. Works on Android Chrome 111+ or desktop with the WebXR emulator extension.</p>
+    <div id="ar-button-container"></div>
+  </div>
+
+  <!-- dom-overlay root — must exist before session start -->
+  <div id="overlay">
+    <div id="hint">Point at a flat surface — a reticle appears. Tap to place.</div>
+    <div id="hud">
+      <button id="btn-scale-down">−</button>
+      <button id="btn-scale-up">+</button>
+      <button id="btn-rotate">↻</button>
+      <button id="btn-delete">🗑</button>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
